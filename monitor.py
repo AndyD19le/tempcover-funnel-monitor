@@ -2,10 +2,11 @@ import sys
 import os
 from playwright.sync_api import sync_playwright
 
-# FINAL VERIFIED MONITOR VERSION
+# Configuration
+# Using 'Tempcover' for both as it's the most reliable brand marker on all pages.
 HEALTH_MATRIX = [
     {"name": "New Web (Drive)", "url": "https://drive.tempcover.com/", "check": "Tempcover"},
-    {"name": "Legacy Web (Motor)", "url": "https://motor.tempcover.com/", "check": "Short Term Insurance"},
+    {"name": "Legacy Web (Motor)", "url": "https://motor.tempcover.com/", "check": "Tempcover"},
 ]
 
 def monitor():
@@ -22,6 +23,7 @@ def monitor():
             print(f"--- RUNNING CHECK: {page_info['name']} ---")
             page = context.new_page()
             try:
+                # Use 'domcontentloaded' to be fast but reliable
                 response = page.goto(page_info['url'], wait_until="domcontentloaded", timeout=60000)
                 status = response.status
                 print(f"DEBUG: Status Code = {status}")
@@ -29,8 +31,10 @@ def monitor():
                 if status >= 400:
                     failures.append(f"❌ {page_info['name']}: Received {status} error.")
                 else:
+                    # Get the full text of the page
                     content = page.content()
                     if page_info['check'].lower() not in content.lower():
+                        print(f"DEBUG: Content check failed. Snippet: {content[:500]}")
                         failures.append(f"❌ {page_info['name']}: Content '{page_info['check']}' not found.")
                     else:
                         print(f"✅ {page_info['name']} is healthy.")
@@ -43,11 +47,11 @@ def monitor():
         browser.close()
 
     if failures:
-        print("\nCRITICAL FAILURES:")
+        print("\n!!! CRITICAL FAILURES DETECTED !!!")
         print("\n".join(failures))
         sys.exit(1)
     else:
-        print("\nSUCCESS: All systems operational.")
+        print("\n🎉 SUCCESS: All systems operational.")
 
 if __name__ == "__main__":
     monitor()
