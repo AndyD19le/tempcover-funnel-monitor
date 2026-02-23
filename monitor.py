@@ -5,6 +5,8 @@ from playwright.sync_api import sync_playwright
 # FINAL VERIFIED MONITOR VERSION
 HEALTH_MATRIX = [
     {"name": "Main Site (Home)", "url": "https://www.tempcover.com/", "check": "Temporary Vehicle Insurance"},
+    {"name": "Main Site (Home)", "url": "https://drive.tempcover.com/invalid-reg", "check": "To get started"},
+    {"name": "Main Site (Home)", "url": "https://drive.tempcover.com/privatecar", "check": "Enter your details"},
 ]
 
 def monitor():
