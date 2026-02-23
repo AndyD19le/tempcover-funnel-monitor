@@ -5,8 +5,7 @@ from playwright.sync_api import sync_playwright
 # Configuration
 # Using 'Tempcover' for both as it's the most reliable brand marker on all pages.
 HEALTH_MATRIX = [
-    {"name": "New Web (Drive)", "url": "https://drive.tempcover.com/", "check": "Tempcover"},
-    {"name": "Legacy Web (Motor)", "url": "https://motor.tempcover.com/", "check": "Tempcover"},
+    {"name": "New Web (Drive)", "url": "https://www.tempcover.com/", "check": "Quick & Easy Temporary Vehicle Insurance"},
 ]
 
 def monitor():
